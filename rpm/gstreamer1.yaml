@@ -1,0 +1,70 @@
+Name: gstreamer1
+Version: 1.4.1
+Release: 1
+Group: Applications/Multimedia
+License: LGPLv2+
+Summary: GStreamer streaming media framework runtime
+Description: |
+  GStreamer is a streaming media framework, based on graphs of filters which
+  operate on media data. Applications using this library can do anything
+  from real-time sound processing to playing videos, and just about anything
+  else media-related.  Its plugin-based architecture means that new data
+  types or processing capabilities can be added simply by installing new 
+  plugins.
+URL: http://gstreamer.freedesktop.org/
+Sources:
+  - "%{name}-%{version}.tar.xz"
+  - gstreamer1.prov
+  - gstreamer1.attr
+Patches:
+  - gstreamer-inspect-rpm-format.patch
+SetupOptions: -q -n %{name}-%{version}/upstream
+
+Macros:
+  - majorminor;1.0
+
+PkgBR:
+  - bison
+  - flex
+  - check
+  - chrpath
+  - python
+  - gettext-devel
+PkgConfigBR:
+  - glib-2.0
+  - libxml-2.0
+
+NoAutoLocale: true
+
+FilesInput: gstreamer-%{majorminor}.lang
+
+ConfigOptions:
+  - --with-package-name='Maui GStreamer package'
+  - --with-package-origin='http://www.maui-project.org/'
+  - --with-buffer-alignment=pagesize
+  - --disable-dependency-tracking
+  - --disable-examples
+  - --disable-tests
+  - --disable-valgrind
+  - --disable-debug
+  - --disable-loadsave
+  - --disable-introspection
+
+SubPackages:
+  - Name: devel
+    Summary: Development tools for GStreamer
+    Group: Development/Libraries
+    Description: |
+      The %{name}-devel package contains libraries and header files for
+      developing applications that use %{name}.
+    Requires:
+      - glib2-devel >= %{_glib2}
+      - libxml2-devel >= %{_libxml2}
+      - check-devel
+
+  - Name: tools
+    Summary: Common tools and files for GStreamer streaming media framework
+    Group: Applications/Multimedia
+    Description: |
+      This package contains wrapper scripts for the command-line tools that work
+      with different major/minor versions of GStreamer.
